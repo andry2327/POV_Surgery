@@ -8,6 +8,13 @@ import torch.backends.cudnn as cudnn
 from config import cfg
 from base import Tester, MY_VAL
 
+''' ------------- INPUT PARAMETERS ------------- '''
+BASE_DATA_PATH = '/content/gdrive/MyDrive/Thesis/POV_Surgery_data'
+BASE_PATH = '/content/POV_Surgery'
+OUT_PATH_SCORE = os.path.join(BASE_PATH, 'HandOccNet_ft/output/eval/ft_ver.txt')
+MODEL_PATH = '/content/gdrive/MyDrive/Thesis/models/snapshot_80.pth.tar'
+''' -------------------------------------------- '''
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -68,7 +75,6 @@ def main(path1):
     with open(os.path.join('/media/rui/data/demo_statistics/HANDOCCNET.pkl'), 'wb') as f:
         pickle.dump({'J2D': j2t_box}, f)
 
-    OUT_PATH_SCORE = '/home/rui/projects/sp2_ws/HandOccNet/output/eval/ft_ver.txt'
     os.makedirs(os.path.dirname(OUT_PATH_SCORE), exist_ok=True)
     text_file = open(OUT_PATH_SCORE, "a+")
     n = text_file.write('======================================================================================================================================')
@@ -100,7 +106,7 @@ if __name__ == "__main__":
     # for i in range(1):
     #     this_check = 48
     #     if os.path.exists(os.path.join('/home/rui/projects/sp2_ws/HandOccNet/output/model_dump/', 'snapshot_' + str(this_check) + '.pth.tar')):
-    main(os.path.join('/home/rui/projects/sp2_ws/HandOccNet/demo/snapshot_demo.pth.tar'))
+    main(MODEL_PATH)
     # for i in range(1):
     #     this_check = 26
     #     if os.path.exists(os.path.join('/home/rui/projects/sp2_ws/HandOccNet/output/model_dump/', 'snapshot_' + str(this_check) + '.pth.tar')):

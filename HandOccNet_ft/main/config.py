@@ -6,9 +6,9 @@ import numpy as np
 class Config:
     
     ## dataset
-    # HO3D, DEX_YCB
+    # HO3D, DEX_YCB, pov_surgery
     trainset = 'HO3D'
-    testset = 'HO3D'
+    testset = 'pov_surgery'
     
     ## input, output
     input_img_shape = (256,256) 
