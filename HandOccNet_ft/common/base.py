@@ -19,7 +19,13 @@ sys.path.append('/content/POV_Surgery/HandOccNet_ft/data/pov_surgery')
 from data.pov_surgery.pov_surgery import POVSURGERY
 # dynamic dataset import
 exec('from ' + cfg.trainset + ' import ' + cfg.trainset)
-exec('from ' + cfg.testset + ' import ' + cfg.testset)
+if cfg.testset=='pov_surgery':
+  exec('from ' + cfg.testset + ' import POVSURGERY')
+else:
+  exec('from ' + cfg.testset + ' import ' + cfg.testset)
+
+
+MODE = 'validation'
 
 class Base(object):
     __metaclass__ = abc.ABCMeta
@@ -194,7 +200,7 @@ class MY_VAL(Base):
     def _make_model(self, check_path):
         # prepare network
         self.logger.info("Creating graph and optimizer...")
-        model = get_model('train')
+        model = get_model(MODE)
 
         model = DataParallel(model).cuda()
         optimizer = self.get_optimizer(model)
