@@ -20,7 +20,13 @@ import sys
 sys.path.append('/content/HandOccNet/data')
 sys.path.append('/content/HandOccNet')
 import data.pov_surgery.datautil as dataset_util
+
 mano = MANO()
+
+''' ------------- INPUT PARAMETERS ------------- '''
+# base path for POV_Surgery_data 
+BASE_DATA_PATH = '/content/gdrive/MyDrive/Thesis/POV_Surgery_data'
+''' -------------------------------------------- '''
 
 
 class POVSURGERY(torch.utils.data.Dataset):
@@ -47,15 +53,16 @@ class POVSURGERY(torch.utils.data.Dataset):
 
         if self.data_split == 'train':
             self.mode = 'train'
-            self.base_info = pickle.load(open('/home/ray/code_release/pov_surgery_dataset/POV_Surgery_data/handoccnet_train/2d_repro_ho3d_style_hocc_cleaned.pkl', 'rb'))
+            self.base_info = pickle.load(open(os.path.join(BASE_DATA_PATH, 'handoccnet_train/2d_repro_ho3d_style_hocc_cleaned.pkl'), 'rb'))
             self.set_list = list(self.base_info.keys())
         elif self.data_split == 'validation':
             self.mode = 'validation'
-            self.base_info = pickle.load(open('/home/ray/code_release/pov_surgery_dataset/POV_Surgery_data/handoccnet_train/2d_repro_ho3d_style_test_cleaned.pkl', 'rb'))
+            self.base_info = pickle.load(open(os.path.join(BASE_DATA_PATH, 'handoccnet_train/2d_repro_ho3d_style_hocc_cleaned.pkl'), 'rb'))
             self.set_list = list(self.base_info.keys())
         else:
             self.mode = 'demo'
-            self.base_info = pickle.load(open('/media/rui/mac_data/POV_surgery/demo_idx_selected.pkl', 'rb'))
+            #self.base_info = pickle.load(open('/media/rui/mac_data/POV_surgery/demo_idx_selected.pkl', 'rb'))
+            self.base_info = pickle.load(open(os.path.join(BASE_DATA_PATH, 'handoccnet_train/2d_repro_ho3d_style_test_cleaned.pkl'), 'rb'))
             temp_list =  self.base_info['imgname']
             temp_anno = self.base_info['annoname']
             temp_o = []
@@ -244,11 +251,10 @@ class POVSURGERY(torch.utils.data.Dataset):
         return len(self.set_list)
     def __getitem__(self, idx):
         sample = {}
-        BASE_DATA = '/home/ray/code_release/pov_surgery_dataset/POV_Surgery_data'
         if self.mode != 'demo':
             seqName, id = self.set_list[idx].split("/")
-            img = Image.open(os.path.join(BASE_DATA,'color', seqName, id + '.jpg')).convert("RGB")
-            frame_anno = pickle.load(open(os.path.join(BASE_DATA,'annotation', seqName, id + '.pkl'), 'rb'))
+            img = Image.open(os.path.join(BASE_DATA_PATH,'color', seqName, id + '.jpg')).convert("RGB")
+            frame_anno = pickle.load(open(os.path.join(BASE_DATA_PATH,'annotation', seqName, id + '.pkl'), 'rb'))
 
             sample["seqName"] = seqName
             sample["id"] = id
@@ -287,7 +293,7 @@ class POVSURGERY(torch.utils.data.Dataset):
                 # self.mano_params[idx]
 
                 # object information
-                gray = Image.open(os.path.join(BASE_DATA,'mask/', seqName, id + '.png'))
+                gray = Image.open(os.path.join(BASE_DATA_PATH,'mask/', seqName, id + '.png'))
                 gray = np.asarray(gray)
                 gray = gray.copy()
                 # if not (np.any(gray==100) and np.any(gray==200)):
@@ -355,7 +361,7 @@ class POVSURGERY(torch.utils.data.Dataset):
                 # self.mano_params[idx]
 
                 # object information
-                gray = Image.open(os.path.join(BASE_DATA,'mask', seqName, id + '.png'))
+                gray = Image.open(os.path.join(BASE_DATA_PATH,'mask', seqName, id + '.png'))
                 gray = np.asarray(gray)
                 gray = gray.copy()
                 # if not (np.any(gray==100) and np.any(gray==200)):
@@ -458,7 +464,7 @@ class POVSURGERY(torch.utils.data.Dataset):
             # self.mano_params[idx]
 
             # object information
-            gray = Image.open(os.path.join('/media/rui/mac_data/POV_surgery/mask/', seqName, id + '.png'))
+            gray = Image.open(os.path.join(BASE_DATA_PATH, 'mask', seqName, id + '.png'))
             gray = np.asarray(gray)
             gray = gray.copy()
             # if not (np.any(gray==100) and np.any(gray==200)):
