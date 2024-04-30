@@ -13,8 +13,8 @@ from torch.nn.parallel.data_parallel import DataParallel
 from config import cfg
 from model import get_model
 import sys
-sys.path.append('/content/HandOccNet')
-sys.path.append('/content/HandOccNet/data')
+sys.path.append('/content/POV_Surgery/HandOccNet_ft')
+sys.path.append('/content/POV_Surgery/HandOccNet_ft/data')
 sys.path.append('/content/POV_Surgery/HandOccNet_ft/data/pov_surgery')
 from data.pov_surgery.pov_surgery import POVSURGERY
 # dynamic dataset import
