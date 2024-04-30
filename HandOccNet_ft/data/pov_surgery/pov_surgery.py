@@ -16,6 +16,9 @@ from utils.transforms import world2cam, cam2pixel, pixel2cam, rigid_align, trans
 from utils.vis import vis_keypoints, vis_mesh, save_obj, vis_keypoints_with_skeleton
 from utils.mano import MANO
 import pickle
+import sys
+sys.path.append('/content/HandOccNet/data')
+sys.path.append('/content/HandOccNet')
 import data.pov_surgery.datautil as dataset_util
 mano = MANO()
 
