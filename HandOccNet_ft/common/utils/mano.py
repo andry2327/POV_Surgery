@@ -9,6 +9,8 @@ sys.path.insert(0, cfg.mano_path)
 import manopth
 from manopth.manolayer import ManoLayer
 
+MANO_ROOT_PATH = '/content/POV_Surgery/data/bodymodel/mano'
+
 class MANO(object):
     def __init__(self):
         self.layer = self.get_layer()
@@ -34,6 +36,6 @@ class MANO(object):
         self.joint_regressor = self.joint_regressor[[0, 13, 14, 15, 16, 1, 2, 3, 17, 4, 5, 6, 18, 10, 11, 12, 19, 7, 8, 9, 20],:]
     def get_layer_gt(self):
         return  ManoLayer(ncomps=45, center_idx=0, flat_hand_mean=True,
-                           side="right", mano_root='../../data/bodymodel/mano', use_pca=False)
+                           side="right", mano_root=MANO_ROOT_PATH, use_pca=False)
     def get_layer(self):
         return ManoLayer(mano_root=osp.join(cfg.mano_path, 'mano', 'models'), flat_hand_mean=False, use_pca=False, side='right') # load right hand MANO model
