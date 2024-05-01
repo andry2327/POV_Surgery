@@ -370,7 +370,7 @@ class Model(nn.Module):
                 vert_gt_o = gt_mano_results['verts3d']
                 vert_pred_o = pred_mano_results['verts3d']
                 a = vert_gt_o.detach().cpu().numpy()[0]
-                b = sio.loadmat(os.path.join(cfg.root_root,'data','rh_face.mat'))['rh_face']
+                b = sio.loadmat(os.path.join(cfg.root_root, 'data', 'rh_face.mat'))['rh_face']
                 mesh = o3d.geometry.TriangleMesh()
                 mesh.vertices = o3d.utility.Vector3dVector(a)
                 mesh.triangles = o3d.utility.Vector3iVector(b)

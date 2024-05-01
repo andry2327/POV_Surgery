@@ -204,7 +204,8 @@ class MY_VAL(Base):
 
         model = DataParallel(model).cuda()
         optimizer = self.get_optimizer(model)
-        print('load FROM TEST!')# model_path = './snapshot_demo.pth.tar'
+        # print('load FROM TEST!')# model_path = './snapshot_demo.pth.tar'
+        self.logger.info(f"Load checkpoint from {check_path}")
 
         # ckpt = torch.load('../demo/snapshot_demo.pth.tar')
         ckpt = torch.load(check_path)
