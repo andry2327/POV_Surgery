@@ -26,10 +26,10 @@ device = 'cuda'
 batch_size = 1
 TPID = [744,320,443,554,671]
 ###################################################################################
-DARASET_ROOT = '/home/ray/code_release/pov_surgery_dataset/POV_Surgery_data'
-INFO_SHEET_PATH = join(DARASET_ROOT,'POV_Surgery_info.csv')
-MANO_PATH = '../data/bodymodel/mano/MANO_RIGHT.pkl'
-REPRO_DIR = '/home/ray/code_release/pov_surgery_dataset/temp_repro_opencv'
+DARASET_ROOT = '/content/drive/MyDrive/Thesis/POV_Surgery_data'
+INFO_SHEET_PATH = join(DARASET_ROOT, 'POV_Surgery_info.csv')
+MANO_PATH = '/content/drive/MyDrive/Thesis/mano_v1_2/models/MANO_RIGHT.pkl'
+REPRO_DIR = '/content/drive/MyDrive/Thesis/POV_Surgery/repro_dir'
 ###################################################################################
 info_sheet = pandas.read_csv(INFO_SHEET_PATH)
 SCALPE_OFFSET = [0.04805371, 0 ,0]
