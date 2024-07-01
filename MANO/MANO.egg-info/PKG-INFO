@@ -9,6 +9,12 @@ Maintainer: Omid Taheri
 Maintainer-email: omid.taheri@tuebingen.mpg.de
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: numpy>=1.16.2
+Requires-Dist: torch>=1.0.1.post2
+Requires-Dist: torchgeometry>=0.1.2
+Requires-Dist: trimesh
+Requires-Dist: scipy
+Requires-Dist: chumpy
 
 # MANO
 A pytorch Implementation of MANO hand model
