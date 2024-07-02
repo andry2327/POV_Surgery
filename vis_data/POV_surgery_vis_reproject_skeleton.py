@@ -291,8 +291,8 @@ for i_seq, rec_name in enumerate(info_sheet['Sequence Name']):
             color[ index_p2d[:,0]  ,index_p2d[:,1]] = 100
             color[index_p2d1[:, 0], index_p2d1[:, 1]] = 244
 
-            color = vis_keypoints_with_skeleton(color, index_p2d)
-            color = showObjJoints(color, index_p2d1)
+            color = vis_keypoints_with_skeleton(color, index_p2d) # plot hand keypoints
+            color = showObjJoints(color, index_p2d1) # plot object keypoints
             # for temp_i in range(len(index_p2d[:, 0])):
             #     cv2.circle(img=color, center=(index_p2d[temp_i, 1], index_p2d[temp_i, 0]), radius=5, color=(0, 255, 0),
             #                thickness=-1)
