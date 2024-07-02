@@ -7,14 +7,10 @@ Author: Omid Taheri
 Author-email: omid.taheri@tuebingen.mpg.de
 Maintainer: Omid Taheri
 Maintainer-email: omid.taheri@tuebingen.mpg.de
+License: UNKNOWN
+Platform: UNKNOWN
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: numpy>=1.16.2
-Requires-Dist: torch>=1.0.1.post2
-Requires-Dist: torchgeometry>=0.1.2
-Requires-Dist: trimesh
-Requires-Dist: scipy
-Requires-Dist: chumpy
 
 # MANO
 A pytorch Implementation of MANO hand model
@@ -147,3 +143,5 @@ The code of this repository was implemented by [Omid Taheri](https://ps.is.tuebi
 For questions, please contact [mano@tue.mpg.de](mano@tue.mpg.de).
 
 For commercial licensing (and all related questions for business applications), please contact [ps-licensing@tue.mpg.de](ps-licensing@tue.mpg.de).
+
+

@@ -1,20 +1,13 @@
 ################ CV2 repro style
 import pyrender
-
 import numpy as np
 import torch
-
 import cv2
 from os.path import join, dirname
 import os
 from tqdm import tqdm
-
-
-
 import trimesh
-
 import matplotlib.pyplot as plt
-
 import pandas
 import numpy as np
 import pickle
@@ -22,12 +15,13 @@ import mano
 import pickle
 from scipy.spatial.transform import Rotation as R
 import scipy.io as sio
-device = 'cuda'
+
+device = 'cpu' # cuda, cpu
 batch_size = 1
 TPID = [744,320,443,554,671]
 ###################################################################################
-DARASET_ROOT = '/content/drive/MyDrive/Thesis/POV_Surgery_data'
-INFO_SHEET_PATH = join(DARASET_ROOT, 'POV_Surgery_info.csv')
+DATASET_ROOT = '/content/drive/MyDrive/Thesis/POV_Surgery_data'
+INFO_SHEET_PATH = join(DATASET_ROOT, 'POV_Surgery_info.csv')
 MANO_PATH = '/content/drive/MyDrive/Thesis/mano_v1_2/models/MANO_RIGHT.pkl'
 REPRO_DIR = '/content/drive/MyDrive/Thesis/POV_Surgery/repro_dir'
 ###################################################################################
@@ -35,6 +29,7 @@ info_sheet = pandas.read_csv(INFO_SHEET_PATH)
 SCALPE_OFFSET = [0.04805371, 0 ,0]
 DISKPLACER_OFFSET = [0, 0.34612157 ,0]
 FRIEM_OFFSET = [0, 0.1145 ,0]
+
 def showObjJoints(image, kp, estIn=None, filename=None, upscale=1, lineThickness=3):
     '''
     Utility function for displaying object annotations
@@ -142,15 +137,15 @@ def vis_keypoints_with_skeleton(image, kp, fname='/home/rui/Downloads/inftest0.p
     o_img = cv2.addWeighted(img, 1.0 - alpha, kp_mask, alpha, 0)
     # cv2.imwrite(fname, o_img)
     return o_img
-    def vis_kp(self, image, kp, fname ='/home/rui/Downloads/inftest0.png'):
+    # def vis_kp(self, image, kp, fname ='/home/rui/Downloads/inftest0.png'):
 
-        # cv2.circle(img = color, (index_p2d[:, 0], index_p2d[:, 1]), 5, (0, 255, 0), -1)
-        for temp_i in range(len(index_p2d[:, 0] )):
-            cv2.circle(img=color, center=(index_p2d[temp_i,0], index_p2d[temp_i,1]), radius=5, color=(0, 255, 0), thickness=-1)
+    #     # cv2.circle(img = color, (index_p2d[:, 0], index_p2d[:, 1]), 5, (0, 255, 0), -1)
+    #     for temp_i in range(len(index_p2d[:, 0] )):
+    #         cv2.circle(img=color, center=(index_p2d[temp_i,0], index_p2d[temp_i,1]), radius=5, color=(0, 255, 0), thickness=-1)
 
-        # color[index_p2d[:, 1], index_p2d[:, 0], :] = 244
+    #     # color[index_p2d[:, 1], index_p2d[:, 0], :] = 244
 
-        cv2.imwrite(fname, color)
+    #     cv2.imwrite(fname, color)
 
 with torch.no_grad():
     rh_mano = mano.load(model_path=MANO_PATH,
@@ -159,10 +154,8 @@ with torch.no_grad():
                         batch_size=1,
                         emissiveFactor=1,
                         flat_hand_mean=True).to(device)
+    
 rh_faces = torch.from_numpy(rh_mano.faces.astype(np.int32)).view(1, -1, 3).to(device)
-
-
-
 
 material_interactee = pyrender.MetallicRoughnessMaterial(
     metallicFactor=0.0,
@@ -185,13 +178,10 @@ for i_seq, rec_name in enumerate(info_sheet['Sequence Name']):
     dataset_name = info_sheet['OUT_seq'][i_seq]
     i_start = info_sheet['start_frame'][i_seq]
     i_end = info_sheet['end_frame'][i_seq]
-    this_mano_dir = join(DARASET_ROOT, 'annotation', dataset_name)
+    this_mano_dir = join(DATASET_ROOT, 'annotation', dataset_name)
     this_repro_dir = join(REPRO_DIR, dataset_name)
 
     os.makedirs(this_repro_dir,exist_ok=True)
-
-
-
 
     COLOR_NAME = dataset_name
 
@@ -223,16 +213,13 @@ for i_seq, rec_name in enumerate(info_sheet['Sequence Name']):
         hand_kp = np.vstack((hand_kp_base, hand_finger))
         hand_kp = hand_kp @ frame_anno['grab2world_R'] + frame_anno['grab2world_T']
 
-
         transformed_mesh_shifted = hand_vert @ frame_anno['grab2world_R'] + frame_anno['grab2world_T']
 
         mesh_hand = trimesh.Trimesh(vertices=transformed_mesh_shifted,
                                faces=rh_mano.faces)
 
-
-        mesh_object = trimesh.load(join(DARASET_ROOT, 'tool_mesh', grasp_name.split('_')[0] +'.stl'))
-        control_point_mat = sio.loadmat(join(DARASET_ROOT,'tool_mesh','tool_control_points.mat'))
-
+        mesh_object = trimesh.load(join(DATASET_ROOT, 'tool_mesh', grasp_name.split('_')[0] +'.stl'))
+        control_point_mat = sio.loadmat(join(DATASET_ROOT,'tool_mesh','tool_control_points.mat'))
 
         if 'diskplacer' in grasp_name:
             mesh_object.vertices = mesh_object.vertices * 0.001 - np.array(DISKPLACER_OFFSET)
@@ -250,9 +237,7 @@ for i_seq, rec_name in enumerate(info_sheet['Sequence Name']):
         tool_control_point = tool_control_point @ frame_anno['base_object_rot'].T
         tool_control_point = tool_control_point @ frame_anno['grab2world_R'] + frame_anno['grab2world_T']
 
-
         this_rot = frame_anno['cam_rot']
-
 
         this_transl = frame_anno['cam_transl']
 
@@ -295,7 +280,7 @@ for i_seq, rec_name in enumerate(info_sheet['Sequence Name']):
             ALL_TRAIN[COLOR_NAME + '/' + str(i).zfill(5)]['frame_anno'] = this_pkl
 
             # image_1 = cv2.imread('/media/rui/Release_D/POV_surgery/color/'+COLOR_NAME +'/' + str(i).zfill(5) + '.jpg')
-            image_1 = cv2.imread(join(DARASET_ROOT,'color', COLOR_NAME, str(i).zfill(5) + '.jpg'))
+            image_1 = cv2.imread(join(DATASET_ROOT,'color', COLOR_NAME, str(i).zfill(5) + '.jpg'))
             index_p2d = new_p2d.astype(np.int32)
             index_p2d1 = new_p2d_object_ct.astype(np.int32)
             # color = image_1
